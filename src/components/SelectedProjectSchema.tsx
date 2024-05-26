@@ -1,4 +1,4 @@
-import { useDynamicForm } from './context/DynamicFormContext';
+import { useDynamicForm } from '../context/DynamicFormContext';
 
 const SelectedProjectSchema = () => {
 	const { entities, selectedProject } = useDynamicForm();

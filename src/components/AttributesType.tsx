@@ -1,6 +1,6 @@
 // import { useDynamicForm } from './context/DynamicFormContext';
 
-import { useDynamicForm } from "./context/DynamicFormContext";
+import { useDynamicForm } from "../context/DynamicFormContext";
 
 const AttributesType = () => {
 	const { entities, handleAttributeChange, newAttribute } = useDynamicForm();
@@ -19,8 +19,8 @@ const AttributesType = () => {
 			value: 'Integer',
 		},
 		{
-			name: 'Long',
-			value: 'Long',
+			name: 'Double',
+			value: 'Double',
 		},
 		{
 			name: 'Boolean',

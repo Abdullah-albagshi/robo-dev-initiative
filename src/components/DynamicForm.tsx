@@ -2,7 +2,7 @@ import AttributesType from './AttributesType';
 import React from 'react';
 import {
   useDynamicForm,
-} from './context/DynamicFormContext';
+} from '../context/DynamicFormContext';
 
 const DynamicSchemaForm: React.FC = () => {
   const {

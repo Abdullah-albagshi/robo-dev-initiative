@@ -1,9 +1,8 @@
 import 'tailwindcss/tailwind.css';
 
-import React, { useState } from 'react';
-
 import Autosuggest from 'react-autosuggest';
-import { useDynamicForm } from './context/DynamicFormContext';
+import { useDynamicForm } from '../context/DynamicFormContext';
+import { useState } from 'react';
 
 const AutoCompleteInput = () => {
   const { entities, setNewEntity, newEntity } = useDynamicForm();
@@ -51,7 +50,7 @@ const AutoCompleteInput = () => {
   };
 
   const inputProps = {
-    placeholder: 'Type a project related term',
+    placeholder: 'Type a project name',
     value,
     className: 'w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500',
   };

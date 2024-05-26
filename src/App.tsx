@@ -1,5 +1,5 @@
 import DynamicForm from './components/DynamicForm';
-import { DynamicFormProvider } from './components/context/DynamicFormContext';
+import { DynamicFormProvider } from './context/DynamicFormContext';
 import GeneratedSchema from './components/GeneratedSchema';
 import ProjectList from './components/ProjectList';
 import React from 'react';
