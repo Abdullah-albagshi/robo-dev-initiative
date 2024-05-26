@@ -1,4 +1,6 @@
-import { useDynamicForm } from './DynamicFormContext';
+// import { useDynamicForm } from './context/DynamicFormContext';
+
+import { useDynamicForm } from "./context/DynamicFormContext";
 
 const AttributesType = () => {
 	const { entities, handleAttributeChange, newAttribute } = useDynamicForm();
@@ -40,7 +42,7 @@ const AttributesType = () => {
 			name='type'
 			value={newAttribute.type}
 			onChange={handleAttributeChange}
-			className='block w-full mb-2 p-2 border rounded'
+			className='block w-full p-2 mb-2 border rounded'
 		>
 			<option value=''>Select Type</option>
 			{types.map((type) => (
