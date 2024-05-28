@@ -64,7 +64,7 @@ const AutoCompleteInput = () => {
       renderSuggestion={renderSuggestion}
       inputProps={{
         ...inputProps,
-        onChange(event, params) {
+        onChange(_, params) {
           setValue(params.newValue);
         },
       }}

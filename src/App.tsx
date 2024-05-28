@@ -2,7 +2,6 @@ import { DynamicFormProvider } from './context/DynamicFormContext';
 import GeneratedSchema from './components/GeneratedSchema';
 import ProjectList from './components/ProjectList';
 import React from 'react';
-import SelectedProjectSchema from './components/SelectedProjectSchema';
 import EntityList from './components/EntityList';
 import ListOfAttributes from './components/ListOfAttributes';
 
