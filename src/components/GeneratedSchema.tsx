@@ -3,7 +3,7 @@ import { useDynamicForm } from '../context/DynamicFormContext'
 const GeneratedSchema = () => {
   const { entities } = useDynamicForm()
   return (
-    <div className="">
+    <div className="p-4">
       <h2 className='mb-2 text-2xl font-bold'>Generated Schema</h2>
       {/* export as zip */}
       <button className='px-4 py-2 mb-4 text-white bg-green-500 rounded'>
