@@ -52,7 +52,7 @@ const AutoCompleteInput = () => {
   const inputProps = {
     placeholder: 'Type a project name',
     value,
-    className: 'w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500',
+    className: 'w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1',
   };
 
   return (
@@ -62,6 +62,7 @@ const AutoCompleteInput = () => {
       onSuggestionsClearRequested={onSuggestionsClearRequested}
       getSuggestionValue={getSuggestionValue}
       renderSuggestion={renderSuggestion}
+
       inputProps={{
         ...inputProps,
         onChange(_, params) {

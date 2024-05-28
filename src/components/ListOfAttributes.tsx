@@ -21,9 +21,9 @@ const ListOfAttributes: React.FC = () => {
 	)?.attributes;
 
 	return (
-		<div className='flex flex-[2] gap-4 p-4'>
+		<div className='flex flex-[2] gap-4 '>
 			<div className='flex-1'>
-				<h3 className='mb-2 text-xl font-semibold'>Add New Attribute</h3>
+        <h2 className='mb-4 text-2xl font-bold'>Add New Attribute</h2>
 				<div className='mb-4'>
 					{/* add label  */}
 					<label htmlFor='name'>Name</label>
@@ -94,9 +94,9 @@ const ListOfAttributes: React.FC = () => {
 				<h2 className='mb-2 text-2xl font-bold'>List of Attributes</h2>
 				<div className='flex flex-col gap-2 border rounded bg-gray-50 h-[300px] p-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100'>
 					{selectedEntityAttributes?.map((attr, index) => (
-						<div className='flex'>
+						<div className='flex' key={index}>
 							<div key={index} className={`p-2 border rounded flex-1`}>
-								{attr.name} - {attr.type}
+								{attr.name}:{attr.type}
 							</div>
               <button
                 onClick={() => deleteAttribute(index)}

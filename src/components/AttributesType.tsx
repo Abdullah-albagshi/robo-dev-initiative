@@ -1,56 +1,52 @@
 // import { useDynamicForm } from './context/DynamicFormContext';
 
 import { useDynamicForm } from "../context/DynamicFormContext";
+import Select from 'react-select';
 
 const AttributesType = () => {
-	const { entities, handleAttributeChange, newAttribute } = useDynamicForm();
+	const { entities, handleTypeChange,newAttribute } = useDynamicForm();
 
 	const regularTypes = [
 		{
-			name: 'String',
+			label: 'String',
 			value: 'String',
 		},
 		{
-			name: 'Float',
+			label: 'Float',
 			value: 'Float',
 		},
 		{
-			name: 'Integer',
+			label: 'Integer',
 			value: 'Integer',
 		},
 		{
-			name: 'Double',
+			label: 'Double',
 			value: 'Double',
 		},
 		{
-			name: 'Boolean',
+			label: 'Boolean',
 			value: 'Boolean',
 		},
 	];
 
 	const typesFromEntities = entities.map((entity) => {
 		return {
-			name: `${entity.relatedToProject}.${entity.relatedToEntity}`,
+			label: `${entity.relatedToProject}.${entity.relatedToEntity}`,
 			value: entity.relatedToEntity,
 		};
 	});
 
 	const types = [...regularTypes, ...typesFromEntities];
+  // const [selectedOption, setSelectedOption] = useState<any>();
 
+  const selectedOption = newAttribute?.type as any;
+  
 	return (
-		<select
-			name='type'
-			value={newAttribute.type}
-			onChange={handleAttributeChange}
-			className='block w-full p-2 mb-2 border rounded'
-		>
-			<option value=''>Select Type</option>
-			{types.map((type) => (
-				<option key={type.value} value={type.value}>
-					{type.name}
-				</option>
-			))}
-		</select>
+      <Select
+        defaultValue={selectedOption}
+        onChange={(e) => handleTypeChange(e.value)}
+        options={types}
+      />
 	);
 };
 

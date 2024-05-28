@@ -39,6 +39,7 @@ interface DynamicFormContextType {
   setNewEntity: React.Dispatch<React.SetStateAction<Partial<Entity>>>;
   projects: string[];
   deleteAttribute: (index: number) => void;
+  handleTypeChange: (value: string) => void;
 }
 
 const DynamicFormContext = React.createContext<DynamicFormContextType | null>(
@@ -78,6 +79,10 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
     setProjects((prev) => [...prev, newProject || '']);
     // reset newEntity
     setNewEntity((prev) => ({ ...prev, relatedToProject: '' }));
+    // set selected project if no project is selected
+    if (!selectedProject) {
+      setSelectedProject(newProject || '');
+    }
 	};
 
   const createNewEntity = () => {
@@ -91,6 +96,13 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
       relatedToProject: selectedProject,
     };
     setEntities((prev) => [...prev, newEntityWithProject as Entity]);
+
+    // reset newEntity
+    setNewEntity((prev) => ({ ...prev, relatedToEntity: '' }));
+    // set selected entity if no entity is selected
+    if (!selectedEntity) {
+      setSelectedEntity(newEntity.relatedToEntity || '');
+    }
   }
 
 	const addAttributeToSelectedProject = () => {
@@ -115,6 +127,16 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
     );
 
     setEntities(updatedEntities);
+
+    // reset newAttribute
+    setNewAttribute({
+      name: '',
+      type: '',
+      array: false,
+      skipInDomain: false,
+      serializeAs: null,
+      partialReference: [],
+    });
 	};
 
   const deleteAttribute = (index: number) => {
@@ -161,6 +183,13 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
 		}));
 	};
 
+  const handleTypeChange = (value: string) => {
+    setNewAttribute((prev) => ({
+      ...prev,
+      type: value,
+    }));
+  }
+
 
 	return (
 		<DynamicFormContext.Provider
@@ -180,7 +209,8 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
         setSelectedEntity,
         createNewEntity,
         setNewEntity,
-        deleteAttribute
+        deleteAttribute,
+        handleTypeChange
 			}}
 		>
 			{children}
