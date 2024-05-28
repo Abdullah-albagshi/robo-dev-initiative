@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-interface Attribute {
+export type Attribute = {
 	name: string;
 	type: string;
 	array: boolean;
@@ -11,8 +11,7 @@ interface Attribute {
 	partialReference?: string[];
 }
 
-interface Entity {
-	id: string;
+export type Entity = {
 	relatedToProject: string;
 	relatedToEntity: string;
 	attributes: Attribute[];
@@ -31,15 +30,17 @@ interface DynamicFormContextType {
 	setNewAttribute: React.Dispatch<React.SetStateAction<Partial<Attribute>>>;
 	selectedProject: string;
 	setSelectedProject: React.Dispatch<React.SetStateAction<string>>;
-  selectedEntity: string
-  setSelectedEntity: React.Dispatch<React.SetStateAction<string>>;
+	selectedEntity: string;
+	setSelectedEntity: React.Dispatch<React.SetStateAction<string>>;
 	createNewProject: () => void;
-  createNewEntity: () => void;
+	createNewEntity: () => void;
 	addAttributeToSelectedProject: () => void;
-  setNewEntity: React.Dispatch<React.SetStateAction<Partial<Entity>>>;
-  projects: string[];
-  deleteAttribute: (index: number) => void;
-  handleTypeChange: (value: string) => void;
+	setNewEntity: React.Dispatch<React.SetStateAction<Partial<Entity>>>;
+	projects: string[];
+	deleteAttribute: (index: number) => void;
+	handleTypeChange: (value: string) => void;
+  setProjects: React.Dispatch<React.SetStateAction<string[]>>;
+  setEntities: React.Dispatch<React.SetStateAction<Entity[]>>;
 }
 
 const DynamicFormContext = React.createContext<DynamicFormContextType | null>(
@@ -50,12 +51,10 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [selectedProject, setSelectedProject] = React.useState<string>('');
-  const [selectedEntity, setSelectedEntity] = React.useState<string>('');
-
-  const [projects, setProjects] = React.useState<string[]>([]);
+	const [selectedEntity, setSelectedEntity] = React.useState<string>('');
+	const [projects, setProjects] = React.useState<string[]>([]);
 	const [entities, setEntities] = React.useState<Entity[]>([]);
 	const [newEntity, setNewEntity] = React.useState<Partial<Entity>>({
-		id: '',
 		relatedToProject: '',
 		relatedToEntity: '',
 		attributes: [],
@@ -70,101 +69,102 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
 	});
 
 	const createNewProject = () => {
-    const newProject = newEntity.relatedToProject;
-    // check if project already exists
-    if (projects.includes(newProject || '')) {
-      return;
-    }
-    // add new project to projects
-    setProjects((prev) => [...prev, newProject || '']);
-    // reset newEntity
-    setNewEntity((prev) => ({ ...prev, relatedToProject: '' }));
-    // set selected project if no project is selected
-    if (!selectedProject) {
-      setSelectedProject(newProject || '');
-    }
+		const newProject = newEntity.relatedToProject;
+		// check if project already exists
+		if (projects.includes(newProject || '')) {
+			return;
+		}
+		// add new project to projects
+		setProjects((prev) => [...prev, newProject || '']);
+		// reset newEntity
+		setNewEntity((prev) => ({ ...prev, relatedToProject: '' }));
+		// set selected project if no project is selected
+		if (!selectedProject) {
+			setSelectedProject(newProject || '');
+		}
 	};
+	const createNewEntity = () => {
+		// check if project is selected
+		if (!selectedProject) {
+			return;
+		}
+		// create new entity with selected project
+		const newEntityWithProject = {
+			...newEntity,
+			relatedToProject: selectedProject,
+		};
+		setEntities((prev) => [...prev, newEntityWithProject as Entity]);
 
-  const createNewEntity = () => {
-    // check if project is selected
-    if (!selectedProject) {
-      return;
-    }
-    // create new entity with selected project
-    const newEntityWithProject = {
-      ...newEntity,
-      relatedToProject: selectedProject,
-    };
-    setEntities((prev) => [...prev, newEntityWithProject as Entity]);
-
-    // reset newEntity
-    setNewEntity((prev) => ({ ...prev, relatedToEntity: '' }));
-    // set selected entity if no entity is selected
-    if (!selectedEntity) {
-      setSelectedEntity(newEntity.relatedToEntity || '');
-    }
-  }
-
+		// reset newEntity
+		setNewEntity((prev) => ({ ...prev, relatedToEntity: '' }));
+		// set selected entity if no entity is selected
+		if (!selectedEntity) {
+			setSelectedEntity(newEntity.relatedToEntity || '');
+		}
+	};
 	const addAttributeToSelectedProject = () => {
-    const selectedEntityAndProject = entities.find(
-      (entity) => entity.relatedToProject === selectedProject && entity.relatedToEntity === selectedEntity
-    );
-    if (!selectedEntityAndProject) {
-      return;
-    }
-    const attr = selectedEntityAndProject.attributes;
-    const newAttr = [...attr, newAttribute] as Attribute[];
+		const selectedEntityAndProject = entities.find(
+			(entity) =>
+				entity.relatedToProject === selectedProject &&
+				entity.relatedToEntity === selectedEntity
+		);
+		if (!selectedEntityAndProject) {
+			return;
+		}
+		const attr = selectedEntityAndProject.attributes;
+		const newAttr = [...attr, newAttribute] as Attribute[];
 
-    const updatedEntity = {
-      ...selectedEntityAndProject,
-      attributes: newAttr,
-    };
+		const updatedEntity = {
+			...selectedEntityAndProject,
+			attributes: newAttr,
+		};
 
-    const updatedEntities = entities.map((entity) =>
-      entity.relatedToProject === selectedProject && entity.relatedToEntity === selectedEntity
-        ? updatedEntity
-        : entity
-    );
-
-    setEntities(updatedEntities);
-
-    // reset newAttribute
-    setNewAttribute({
-      name: '',
-      type: '',
-      array: false,
-      skipInDomain: false,
-      serializeAs: null,
-      partialReference: [],
-    });
+		const updatedEntities = entities.map((entity) =>
+			entity.relatedToProject === selectedProject &&
+			entity.relatedToEntity === selectedEntity
+				? updatedEntity
+				: entity
+		);
+		setEntities(updatedEntities);
+		// reset newAttribute
+		setNewAttribute({
+			name: '',
+			type: '',
+			array: false,
+			skipInDomain: false,
+			serializeAs: null,
+			partialReference: [],
+		});
 	};
 
-  const deleteAttribute = (index: number) => {
-    const selectedEntityAttributes = entities.find(
-      (entity) =>
-        entity.relatedToProject === selectedProject &&
-        entity.relatedToEntity === selectedEntity
-    )?.attributes;
-  
-    const updatedAttributes = selectedEntityAttributes?.filter((_, i) => i !== index);
-    const updatedEntity = {
-      ...entities.find(
-        (entity) =>
-          entity.relatedToProject === selectedProject &&
-          entity.relatedToEntity === selectedEntity
-      ),
-      attributes: updatedAttributes,
-    };
+	const deleteAttribute = (index: number) => {
+		const selectedEntityAttributes = entities.find(
+			(entity) =>
+				entity.relatedToProject === selectedProject &&
+				entity.relatedToEntity === selectedEntity
+		)?.attributes;
 
-    const updatedEntities = entities.map((entity) =>
-      entity.relatedToProject === selectedProject &&
-      entity.relatedToEntity === selectedEntity
-        ? updatedEntity
-        : entity
-    ) as Entity[];
+		const updatedAttributes = selectedEntityAttributes?.filter(
+			(_, i) => i !== index
+		);
+		const updatedEntity = {
+			...entities.find(
+				(entity) =>
+					entity.relatedToProject === selectedProject &&
+					entity.relatedToEntity === selectedEntity
+			),
+			attributes: updatedAttributes,
+		};
 
-    setEntities(updatedEntities);
-  }
+		const updatedEntities = entities.map((entity) =>
+			entity.relatedToProject === selectedProject &&
+			entity.relatedToEntity === selectedEntity
+				? updatedEntity
+				: entity
+		) as Entity[];
+
+		setEntities(updatedEntities);
+	};
 
 	const handleEntityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -183,18 +183,18 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
 		}));
 	};
 
-  const handleTypeChange = (value: string) => {
-    setNewAttribute((prev) => ({
-      ...prev,
-      type: value,
-    }));
-  }
+	const handleTypeChange = (value: string) => {
+		setNewAttribute((prev) => ({
+			...prev,
+			type: value,
+		}));
+	};
 
 
 	return (
 		<DynamicFormContext.Provider
 			value={{
-        projects,
+				projects,
 				createNewProject,
 				addAttributeToSelectedProject,
 				entities,
@@ -205,12 +205,14 @@ export const DynamicFormProvider: React.FC<{ children: React.ReactNode }> = ({
 				setNewAttribute,
 				selectedProject,
 				setSelectedProject,
-        selectedEntity,
-        setSelectedEntity,
-        createNewEntity,
-        setNewEntity,
-        deleteAttribute,
-        handleTypeChange
+				selectedEntity,
+				setSelectedEntity,
+				createNewEntity,
+				setNewEntity,
+				deleteAttribute,
+				handleTypeChange,
+        setProjects,
+        setEntities,
 			}}
 		>
 			{children}
