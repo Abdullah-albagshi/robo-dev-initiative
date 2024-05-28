@@ -1,9 +1,10 @@
-import DynamicForm from './components/DynamicForm';
 import { DynamicFormProvider } from './context/DynamicFormContext';
 import GeneratedSchema from './components/GeneratedSchema';
 import ProjectList from './components/ProjectList';
 import React from 'react';
 import SelectedProjectSchema from './components/SelectedProjectSchema';
+import EntityList from './components/EntityList';
+import ListOfAttributes from './components/ListOfAttributes';
 
 const App: React.FC = () => {
   return (
@@ -16,12 +17,10 @@ const App: React.FC = () => {
           <div className="flex-[2]">
             <div className="flex justify-start gap-2 p-4">
               <ProjectList />
-              <DynamicForm />
+              <EntityList/>
+              <ListOfAttributes />
             </div>
             <GeneratedSchema />
-          </div>
-          <div className="flex-1">
-            <SelectedProjectSchema />
           </div>
         </div>
       </DynamicFormProvider>

@@ -30,7 +30,7 @@ const AttributesType = () => {
 
 	const typesFromEntities = entities.map((entity) => {
 		return {
-			name: `${entity.relatedToEntity} / ${entity.relatedToProject}`,
+			name: `${entity.relatedToProject}.${entity.relatedToEntity}`,
 			value: entity.relatedToEntity,
 		};
 	});

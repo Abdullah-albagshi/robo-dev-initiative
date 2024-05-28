@@ -5,7 +5,7 @@ import { useDynamicForm } from '../context/DynamicFormContext';
 import { useState } from 'react';
 
 const AutoCompleteInput = () => {
-  const { entities, setNewEntity, newEntity } = useDynamicForm();
+  const { projects, setNewEntity, newEntity } = useDynamicForm();
 
   const value = newEntity.relatedToProject || '';
 
@@ -13,8 +13,8 @@ const AutoCompleteInput = () => {
     setNewEntity((prev) => ({ ...prev, relatedToProject: value }));
   }
 
-  const suggestions = entities.map((entity: { relatedToProject: string }) => ({
-    name: entity.relatedToProject,
+  const suggestions = projects.map(item => ({
+    name: item,
   }));
 
   // Function to calculate suggestions for any given input value.
