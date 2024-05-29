@@ -41,13 +41,14 @@ const useLoadSchema = () => {
 	const isValidAttribute = (attr: any): attr is Attribute => {
 		return (
 			typeof attr.name === 'string' &&
-			typeof attr.type === 'string' &&
-			typeof attr.array === 'boolean' &&
-			typeof attr.skipInDomain === 'boolean' &&
-			(typeof attr.serializeAs === 'string' || attr.serializeAs === null) &&
-			(attr.partialReference === undefined ||
-				(Array.isArray(attr.partialReference) &&
-					attr.partialReference.every((ref: any) => typeof ref === 'string')))
+			typeof attr.type === 'string' 
+      
+			// && typeof attr.array === 'boolean' &&
+			// typeof attr.skipInDomain === 'boolean' &&
+			// (typeof attr.serializeAs === 'string' || attr.serializeAs === null) &&
+			// (attr.partialReference === undefined ||
+			// 	(Array.isArray(attr.partialReference) &&
+			// 		attr.partialReference.every((ref: any) => typeof ref === 'string')))
 		);
 	};
   const updateStateAfterFileUpload = (data: Entity[] ) => {
