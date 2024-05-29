@@ -25,40 +25,47 @@ const useLoadSchema = () => {
 		}
 	};
 
-	const isValidEntityArray = (json: any): json is Entity[] => {
-		return Array.isArray(json) && json.every(isValidEntity);
-	};
+	  const isValidEntityArray = (json: Entity[]) => {
+    return Array.isArray(json) && json.every(isValidEntity);
+  };
 
-	const isValidEntity = (json: any): json is Entity => {
-		return (
-			typeof json.relatedToProject === 'string' &&
-			typeof json.relatedToEntity === 'string' &&
-			Array.isArray(json.attributes) &&
-			json.attributes.every(isValidAttribute)
-		);
-	};
+  const isValidEntity = (json: Entity)=> {
+    return (
+      typeof json.relatedToProject === 'string' &&
+      typeof json.relatedToEntity === 'string' &&
+      Array.isArray(json.attributes) &&
+      isValidAttributes(json.attributes, json?.type)
+    );
+  };
 
-	const isValidAttribute = (attr: any): attr is Attribute => {
-		return (
-			typeof attr.name === 'string' &&
-			typeof attr.type === 'string' 
-      
-			// && typeof attr.array === 'boolean' &&
-			// typeof attr.skipInDomain === 'boolean' &&
-			// (typeof attr.serializeAs === 'string' || attr.serializeAs === null) &&
-			// (attr.partialReference === undefined ||
-			// 	(Array.isArray(attr.partialReference) &&
-			// 		attr.partialReference.every((ref: any) => typeof ref === 'string')))
-		);
-	};
+  const isValidAttributes = (attr: Attribute[], projectType?: string) => {
+    if (projectType === 'ENUM') {
+      return attr.every(isValidEnumAttribute);
+    } else {
+      return attr.every(isValidAttribute);
+    }
+  };
+
+  const isValidAttribute = (attr: Attribute) => {
+    return (
+      typeof attr.name === 'string' &&
+      typeof attr.type === 'string'
+      // You can add more checks here if needed
+    );
+  };
+
+  const isValidEnumAttribute = (attr: Attribute) => {
+    return (typeof attr.name === 'string');
+  };
+
   const updateStateAfterFileUpload = (data: Entity[] ) => {
     // check if data is empty or is an array
     if (Object.keys(data).length === 0) {
       return;
     }
     if (!Array.isArray(data)) return;
-    // set projects
-    const projects = data.map((entity) => entity.relatedToProject);
+    // set projects and make it a unique array
+    const projects = Array.from(new Set(data.map((entity) => entity.relatedToProject)));
     setProjects(projects);
     // set entities
     setEntities(data);

@@ -15,6 +15,7 @@ export type Entity = {
 	relatedToProject: string;
 	relatedToEntity: string;
 	attributes: Attribute[];
+  type?: string;
 }
 
 interface DynamicFormContextType {
